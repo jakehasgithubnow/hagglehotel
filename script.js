@@ -4,7 +4,7 @@ function getUrlParams() {
     return {
         hotelName: params.get('name') || 'Hotel Name Not Provided',
         hotelAddress: params.get('address') || 'Address Not Provided',
-        price: parseFloat(params.get('price')) || 0,
+        price: params.get('price') || 'Price Not Specified',
         roomType: params.get('room_type') || 'Room Type Not Specified',
         cancellationPolicy: params.get('cancellation_policy') || 'Cancellation Policy Not Specified',
         checkIn: params.get('checkin_date') || 'Check-in Date Not Specified',
@@ -21,7 +21,7 @@ function getUrlParams() {
 function updateHotelInfo(data) {
     document.getElementById('hotelName').textContent = data.hotelName;
     document.getElementById('hotelAddress').textContent = data.hotelAddress;
-    document.getElementById('totalPrice').textContent = `€ ${data.price.toFixed(2)}`;
+    document.getElementById('totalPrice').textContent = `€ ${data.price}`; // Simply display the price from URL
     document.getElementById('roomType').textContent = data.roomType;
     document.getElementById('cancellationPolicy').textContent = data.cancellationPolicy;
     document.getElementById('checkIn').textContent = `${data.checkIn} ${data.checkInTime}`;
@@ -49,56 +49,8 @@ function updateHotelInfo(data) {
     });
 }
 
-// Function to simulate negotiation process
-function simulateNegotiation() {
-    const steps = document.querySelectorAll('#negotiationSteps li');
-    let currentStep = 0;
-
-    function updateStep() {
-        if (currentStep < steps.length) {
-            steps[currentStep].classList.add('completed');
-            if (currentStep < steps.length - 1) {
-                steps[currentStep + 1].classList.add('in-progress');
-            }
-            currentStep++;
-            if (currentStep < steps.length) {
-                setTimeout(updateStep, 2000); // Wait 2 seconds before next step
-            } else {
-                // Negotiation complete, update price
-                const currentPrice = parseFloat(document.getElementById('totalPrice').textContent.replace('€ ', ''));
-                const newPrice = currentPrice * 0.85; // 15% discount
-                document.getElementById('totalPrice').textContent = `€ ${newPrice.toFixed(2)}`;
-                document.getElementById('totalPrice').style.color = 'green';
-            }
-        }
-    }
-
-    updateStep();
-}
-
-// Function to update the number of people who saved
-function updatePeopleSaved() {
-    let saved = 112; // Start with the initial number
-    const savedElement = document.getElementById('peopleSaved');
-
-    function incrementSaved() {
-        saved++;
-        savedElement.textContent = `${saved} people have saved today!`;
-        setTimeout(incrementSaved, Math.random() * 10000 + 5000); // Random interval between 5-15 seconds
-    }
-
-    incrementSaved();
-}
-
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     const hotelData = getUrlParams();
     updateHotelInfo(hotelData);
-    simulateNegotiation();
-    updatePeopleSaved();
-
-    // Add event listener for "Show on map" button
-    document.querySelector('.show-map-btn').addEventListener('click', function() {
-        alert('This would open a map view of the hotel location.');
-    });
 });
