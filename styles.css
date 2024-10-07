@@ -1,52 +1,55 @@
 /* Global Styles */
 body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
     background-color: #f0f0f0;
+    color: #333;
 }
 
 .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.left-column, .center-column, .right-column {
-    flex: 1;
-    min-width: 300px;
-}
-
-/* Typography */
 h1, h2, h3 {
-    color: #2c3e50;
     margin-top: 0;
 }
 
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+/* Homepage Styles */
+.homepage-container {
+    text-align: center;
+    padding: 50px 20px;
 }
 
-h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
+.btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
-h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
+.btn:hover {
+    background-color: #45a049;
 }
 
-/* Info Boxes */
-.info-box {
+/* Results Page Styles */
+.left-column, .center-column, .right-column {
+    flex: 1;
+    padding: 10px;
+    min-width: 300px;
+}
+
+.info-box, .hotel-info, .booking-details, .negotiation-box, .price-info, .room-info {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -54,105 +57,123 @@ h3 {
     margin-bottom: 20px;
 }
 
-/* Facility Chips */
-.facility-chip {
-    display: inline-block;
-    background-color: #e0e0e0;
-    padding: 5px 10px;
-    margin: 2px;
-    border-radius: 20px;
-    font-size: 14px;
+.hotel-info h2 {
+    color: #0071c2;
 }
 
-/* Price Info */
-.price-info {
-    background-color: #e6f3ff;
-    padding: 15px;
-    border-radius: 5px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#totalPrice {
-    font-size: 24px;
+.hotel-rating {
     font-weight: bold;
-    color: #2ecc71;
 }
 
-/* Negotiation Box */
-.negotiation-box {
-    background-color: #f0f0f0;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+#hotelAmenities span {
+    display: inline-block;
+    background-color: #eee;
+    padding: 5px 10px;
+    margin: 5px 5px 5px 0;
+    border-radius: 3px;
 }
 
-#negotiationSteps {
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.change-selection {
+    color: #0071c2;
+    text-decoration: none;
+}
+
+.negotiation-box ul {
     list-style-type: none;
     padding-left: 0;
 }
 
-#negotiationSteps li {
+.negotiation-box li {
     margin-bottom: 10px;
     padding-left: 25px;
     position: relative;
 }
 
-#negotiationSteps li.completed::before {
-    content: '✓';
+.negotiation-box li::before {
+    content: '';
     position: absolute;
     left: 0;
-    color: green;
-}
-
-.loading {
-    display: inline-block;
+    top: 50%;
+    transform: translateY(-50%);
     width: 20px;
     height: 20px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    position: absolute;
-    left: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23999"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+    background-size: contain;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.negotiation-box li.completed::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234CAF50"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
 }
 
-#negotiationSteps li.in-progress .loading {
-    display: inline-block;
+.negotiation-box li.in-progress::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFA500"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
 }
 
-#negotiationSteps li.completed .loading {
-    display: none;
+.savings-info {
+    text-align: center;
+    font-size: 1.2em;
 }
 
-/* Map and Button */
-.map img {
-    max-width: 100%;
-    height: auto;
+.total-price {
+    background-color: #e6f3ff;
+    padding: 10px;
     border-radius: 5px;
+    text-align: center;
+}
+
+.total-price h3 {
+    margin-bottom: 5px;
+}
+
+.total-price p {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.room-info ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.room-info li {
+    margin-bottom: 10px;
+}
+
+.amenities span {
+    display: inline-block;
+    background-color: #eee;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.map img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .show-map-btn {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #3498db;
+    background-color: #0071c2;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
+    font-size: 1em;
 }
 
 .show-map-btn:hover {
-    background-color: #2980b9;
+    background-color: #005999;
 }
 
 /* Responsive Design */
@@ -164,39 +185,4 @@ h3 {
     .left-column, .center-column, .right-column {
         width: 100%;
     }
-}
-
-/* Additional Styles */
-.detail-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.room-info ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.room-info li {
-    margin-bottom: 5px;
-}
-
-.savings-info {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-/* Utility Classes */
-.text-center {
-    text-align: center;
-}
-
-.mb-10 {
-    margin-bottom: 10px;
-}
-
-.mt-20 {
-    margin-top: 20px;
 }
