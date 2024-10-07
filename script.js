@@ -1,202 +1,95 @@
-/* Global Styles */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f0f0f0;
+// Function to get URL parameters
+function getUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        hotelName: params.get('name') || 'Hotel Name Not Provided',
+        hotelAddress: params.get('address') || 'Address Not Provided',
+        price: params.get('price') || 'Price Not Specified',
+        roomType: params.get('room_type') || 'Room Type Not Specified',
+        cancellationPolicy: params.get('cancellation_policy') || 'Cancellation Policy Not Specified',
+        checkIn: params.get('checkin_date') || 'Check-in Date Not Specified',
+        checkOut: params.get('checkout_date') || 'Check-out Date Not Specified',
+        checkInTime: params.get('checkin_time') || 'Check-in Time Not Specified',
+        checkOutTime: params.get('checkout_time') || 'Check-out Time Not Specified',
+        stayLength: params.get('length_of_stay') || 'Length of Stay Not Specified',
+        hotelFacilities: params.get('hotel_facilities') ? params.get('hotel_facilities').split(',') : [],
+        roomFacilities: params.get('room_facilities') ? params.get('room_facilities').split(',') : []
+    };
 }
 
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+// Function to update the page with hotel data
+function updateHotelInfo(data) {
+    document.getElementById('hotelName').textContent = data.hotelName;
+    document.getElementById('hotelAddress').textContent = data.hotelAddress;
+    document.getElementById('totalPrice').textContent = `€ ${data.price}`;
+    document.getElementById('roomType').textContent = data.roomType;
+    document.getElementById('cancellationPolicy').textContent = data.cancellationPolicy;
+    document.getElementById('checkIn').textContent = `${data.checkIn} ${data.checkInTime}`;
+    document.getElementById('checkOut').textContent = `${data.checkOut} ${data.checkOutTime}`;
+    document.getElementById('stayLength').textContent = data.stayLength;
+
+    // Update hotel facilities
+    const hotelFacilitiesContainer = document.getElementById('hotelFacilities');
+    hotelFacilitiesContainer.innerHTML = '';
+    data.hotelFacilities.forEach(facility => {
+        const span = document.createElement('span');
+        span.textContent = facility.trim();
+        span.className = 'facility-chip';
+        hotelFacilitiesContainer.appendChild(span);
+    });
+
+    // Update room facilities
+    const roomFacilitiesContainer = document.getElementById('roomFacilities');
+    roomFacilitiesContainer.innerHTML = '';
+    data.roomFacilities.forEach(facility => {
+        const span = document.createElement('span');
+        span.textContent = facility.trim();
+        span.className = 'facility-chip';
+        roomFacilitiesContainer.appendChild(span);
+    });
 }
 
-.left-column, .center-column, .right-column {
-    flex: 1;
-    min-width: 300px;
-}
+const negotiationSteps = [
+    { text: "We've found the right phone number", delay: 2000 },
+    { text: "The phone's ringing", delay: 4000 },
+    { text: "The hotel has answered", delay: 6000 },
+    { text: "We're discussing better deals", delay: 15000 },
+    { text: "The hotel has confirmed a better deal for you!", delay: 120000 }
+];
 
-/* Typography */
-h1, h2, h3 {
-    color: #2c3e50;
-    margin-top: 0;
-}
+function updateNegotiationStep(index) {
+    const step = negotiationSteps[index];
+    const stepElement = document.querySelector(`#negotiationSteps li:nth-child(${index + 1})`);
+    
+    stepElement.classList.remove('in-progress');
+    stepElement.classList.add('completed');
+    stepElement.innerHTML = `✓ ${step.text}`;
 
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-
-h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-/* Info Boxes */
-.info-box {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-}
-
-/* Facility Chips */
-.facility-chip {
-    display: inline-block;
-    background-color: #e0e0e0;
-    padding: 5px 10px;
-    margin: 2px;
-    border-radius: 20px;
-    font-size: 14px;
-}
-
-/* Price Info */
-.price-info {
-    background-color: #e6f3ff;
-    padding: 15px;
-    border-radius: 5px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#totalPrice {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2ecc71;
-}
-
-/* Negotiation Box */
-.negotiation-box {
-    background-color: #f0f0f0;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-#negotiationSteps {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-#negotiationSteps li {
-    margin-bottom: 10px;
-    padding-left: 25px;
-    position: relative;
-}
-
-#negotiationSteps li.completed::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: green;
-}
-
-.loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    position: absolute;
-    left: 0;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-#negotiationSteps li.in-progress .loading {
-    display: inline-block;
-}
-
-#negotiationSteps li.completed .loading {
-    display: none;
-}
-
-/* Map and Button */
-.map img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-
-.show-map-btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.show-map-btn:hover {
-    background-color: #2980b9;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .left-column, .center-column, .right-column {
-        width: 100%;
+    if (index < negotiationSteps.length - 1) {
+        document.querySelector(`#negotiationSteps li:nth-child(${index + 2})`).classList.add('in-progress');
     }
 }
 
-/* Additional Styles */
-.detail-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+function initializeNegotiationSteps() {
+    const stepsContainer = document.getElementById('negotiationSteps');
+    stepsContainer.innerHTML = ''; // Clear existing steps
+
+    negotiationSteps.forEach((step, index) => {
+        const li = document.createElement('li');
+        li.textContent = step.text;
+        li.className = index === 0 ? 'in-progress' : '';
+        li.innerHTML = `<span class="loading"></span> ${step.text}`;
+        stepsContainer.appendChild(li);
+
+        setTimeout(() => updateNegotiationStep(index), step.delay);
+    });
 }
 
-.room-info ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.room-info li {
-    margin-bottom: 5px;
-}
-
-.savings-info {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-/* Utility Classes */
-.text-center {
-    text-align: center;
-}
-
-.mb-10 {
-    margin-bottom: 10px;
-}
-
-.mt-20 {
-    margin-top: 20px;
-}
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    const hotelData = getUrlParams();
+    updateHotelInfo(hotelData);
+    
+    // Start the simulated negotiation process
+    initializeNegotiationSteps();
+});
