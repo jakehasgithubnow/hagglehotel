@@ -172,6 +172,16 @@ h1, h2, h3 {
     font-size: 1em;
 }
 
+.facility-chip {
+    display: inline-block;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+
 .show-map-btn:hover {
     background-color: #005999;
 }
