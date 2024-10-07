@@ -192,6 +192,16 @@ h1, h2, h3 {
         flex-direction: column;
     }
 
+
+    .facility-chip {
+    display: inline-block;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
     .left-column, .center-column, .right-column {
         width: 100%;
     }
