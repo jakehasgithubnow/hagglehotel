@@ -83,7 +83,6 @@ h1, h2, h3 {
     color: #0071c2;
     text-decoration: none;
 }
-
 .negotiation-box ul {
     list-style-type: none;
     padding-left: 0;
@@ -103,7 +102,6 @@ h1, h2, h3 {
     transform: translateY(-50%);
     width: 20px;
     height: 20px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23999"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
     background-size: contain;
 }
 
@@ -112,8 +110,20 @@ h1, h2, h3 {
 }
 
 .negotiation-box li.in-progress::before {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFA500"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #FFA500;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+
 
 .savings-info {
     text-align: center;
