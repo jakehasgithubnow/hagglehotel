@@ -1,44 +1,52 @@
-// Simulated data that would normally come from a server
-const hotelData = {
-    hotelName: "Zenit Málaga",
-    hotelAddress: "Cuba, 1-3, Malaga Centro, 29013 Málaga, Spain",
-    rating: 8.3,
-    reviewCount: 2206,
-    amenities: ["Pets allowed", "Free WiFi", "Parking", "Restaurant"],
-    checkIn: "Thu 19 Dec 2024",
-    checkOut: "Thu 26 Dec 2024",
-    stayLength: "1 week",
-    roomDetails: "1 room for 2 adults",
-    initialPrice: 538.20,
-    roomType: "Double or Twin Room",
-    cancellationPolicy: "Free cancellation before 18 December 2024",
-    guestCount: "2 adults",
-    cleanlinessRating: 8.8
-};
+// Function to get URL parameters
+function getUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        hotelName: params.get('name') || 'Hotel Name Not Provided',
+        hotelAddress: params.get('address') || 'Address Not Provided',
+        price: parseFloat(params.get('price')) || 0,
+        roomType: params.get('room_type') || 'Room Type Not Specified',
+        cancellationPolicy: params.get('cancellation_policy') || 'Cancellation Policy Not Specified',
+        checkIn: params.get('checkin_date') || 'Check-in Date Not Specified',
+        checkOut: params.get('checkout_date') || 'Check-out Date Not Specified',
+        checkInTime: params.get('checkin_time') || 'Check-in Time Not Specified',
+        checkOutTime: params.get('checkout_time') || 'Check-out Time Not Specified',
+        stayLength: params.get('length_of_stay') || 'Length of Stay Not Specified',
+        hotelFacilities: params.get('hotel_facilities') ? params.get('hotel_facilities').split(',') : [],
+        roomFacilities: params.get('room_facilities') ? params.get('room_facilities').split(',') : []
+    };
+}
 
 // Function to update the page with hotel data
 function updateHotelInfo(data) {
     document.getElementById('hotelName').textContent = data.hotelName;
     document.getElementById('hotelAddress').textContent = data.hotelAddress;
-    document.getElementById('hotelRating').textContent = `${data.rating} Very good · ${data.reviewCount} reviews`;
-    
-    const amenitiesContainer = document.getElementById('hotelAmenities');
-    amenitiesContainer.innerHTML = '';
-    data.amenities.forEach(amenity => {
-        const span = document.createElement('span');
-        span.textContent = amenity;
-        amenitiesContainer.appendChild(span);
-    });
-
-    document.getElementById('checkIn').textContent = data.checkIn;
-    document.getElementById('checkOut').textContent = data.checkOut;
-    document.getElementById('stayLength').textContent = data.stayLength;
-    document.getElementById('roomDetails').textContent = data.roomDetails;
-    document.getElementById('totalPrice').textContent = `€ ${data.initialPrice.toFixed(2)}`;
+    document.getElementById('totalPrice').textContent = `€ ${data.price.toFixed(2)}`;
     document.getElementById('roomType').textContent = data.roomType;
     document.getElementById('cancellationPolicy').textContent = data.cancellationPolicy;
-    document.getElementById('guestCount').textContent = data.guestCount;
-    document.getElementById('cleanlinessRating').textContent = `Exceptionally clean rooms - ${data.cleanlinessRating}`;
+    document.getElementById('checkIn').textContent = `${data.checkIn} ${data.checkInTime}`;
+    document.getElementById('checkOut').textContent = `${data.checkOut} ${data.checkOutTime}`;
+    document.getElementById('stayLength').textContent = data.stayLength;
+
+    // Update hotel facilities
+    const hotelFacilitiesContainer = document.getElementById('hotelFacilities');
+    hotelFacilitiesContainer.innerHTML = '';
+    data.hotelFacilities.forEach(facility => {
+        const span = document.createElement('span');
+        span.textContent = facility;
+        span.className = 'facility-chip';
+        hotelFacilitiesContainer.appendChild(span);
+    });
+
+    // Update room facilities
+    const roomFacilitiesContainer = document.getElementById('roomFacilities');
+    roomFacilitiesContainer.innerHTML = '';
+    data.roomFacilities.forEach(facility => {
+        const span = document.createElement('span');
+        span.textContent = facility;
+        span.className = 'facility-chip';
+        roomFacilitiesContainer.appendChild(span);
+    });
 }
 
 // Function to simulate negotiation process
@@ -57,7 +65,8 @@ function simulateNegotiation() {
                 setTimeout(updateStep, 2000); // Wait 2 seconds before next step
             } else {
                 // Negotiation complete, update price
-                const newPrice = hotelData.initialPrice * 0.85; // 15% discount
+                const currentPrice = parseFloat(document.getElementById('totalPrice').textContent.replace('€ ', ''));
+                const newPrice = currentPrice * 0.85; // 15% discount
                 document.getElementById('totalPrice').textContent = `€ ${newPrice.toFixed(2)}`;
                 document.getElementById('totalPrice').style.color = 'green';
             }
@@ -83,6 +92,7 @@ function updatePeopleSaved() {
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
+    const hotelData = getUrlParams();
     updateHotelInfo(hotelData);
     simulateNegotiation();
     updatePeopleSaved();
